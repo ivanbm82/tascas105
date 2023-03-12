@@ -1,57 +1,48 @@
 package n1exercici4;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Scanner;
-
+import java.util.*;
 public class App {
 
-	public static void main(String[] arg) {
+	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+
+		File archivos = new File(args[0]);
+		listaArbol(archivos);
+		leerFile(archivos);
 		
-		
-		
-		ArrayList<String> lista=new ArrayList<>();
-		createFile(listaArbol(new File("C:\\Users\\formacio\\Desktop\\tascas105-main"),lista));
-		leerFile("C:\\Users\\formacio\\Desktop\\tascas105-main\\listaDirectorios.txt");
 
 	}
 
-	public static ArrayList<String> listaArbol(File dirrectorio, ArrayList<String> lista) {
+	public static void listaArbol(File archivos) {
 
-		File listaDirectorio[] = dirrectorio.listFiles();
-		String informacionDirectorio;
+		File[] listaDirectorios = archivos.listFiles();
 
-		if (listaDirectorio != null) {
+		SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
 
-			for (int i = 0; i < listaDirectorio.length; i++) {
+		if (listaDirectorios != null) {
+			Arrays.sort(listaDirectorios);
+			for (File archivo : listaDirectorios)
 
-				if (listaDirectorio[i].isDirectory()) {
+				if (archivo.isFile()) {
+					String archiescrito = archivo.getName() + " " + "F" + " " + fecha.format(archivo.lastModified());
 
-					informacionDirectorio = listaDirectorio[i].getName() + " - D - "
-							+ formato(listaDirectorio[i].lastModified());
-					lista.add(informacionDirectorio);
-					listaArbol(listaDirectorio[i],lista);
+					createFile(archiescrito);
 
-				} else {
-					informacionDirectorio = listaDirectorio[i].getName() + " - F - "
-							+ formato(listaDirectorio[i].lastModified());
-					lista.add(informacionDirectorio);
+				} else if (archivo.isDirectory()) {
 
+					String archiescrito = archivo.getName() + " " + "D" + " " + fecha.format(archivo.lastModified());
+
+					createFile(archiescrito);
+
+					listaArbol(archivo);
 				}
-			}
+
 		} else {
-			System.out.println("El directorio no existe");
 
+			System.out.println("La ruta no es correcta");
 		}
-		return lista;
-
 	}
 
 	public static String formato(long fecha) {
@@ -59,16 +50,12 @@ public class App {
 		return new SimpleDateFormat("dd-MM-yyyy").format(new Date(fecha));
 	}
 
-	public static void createFile(ArrayList<String> lista) {
+	public static void createFile(String archiescrito) {
 
-		File creacionArchivo = new File("C:\\Users\\formacio\\Desktop\\tascas105-main\\listaDirectorios.txt");
 		try {
+			File creacionArchivo = new File("/Users/navi/Desktop/listaDirectorios.txt");
 			FileWriter fw = new FileWriter(creacionArchivo);
-			BufferedWriter bw = new BufferedWriter(fw);
-			for (String string : lista) {
-				bw.write(string + "\n");
-			}
-			bw.close();
+			fw.write(archiescrito + "\n");
 			fw.close();
 
 		} catch (IOException e) {
@@ -76,32 +63,24 @@ public class App {
 		}
 
 	}
-
-	public static void leerFile(String nombreArchivo) {
-
+	public static void leerFile(File nombreArchivo) {
 		try {
-			File archivo = new File(nombreArchivo);
-
-			Scanner input = new Scanner(archivo);
-
-			while (input.hasNextLine()) {
-
-				String data = input.nextLine();
-
-				System.out.println(data);
-
-			}
-
-			input.close();
-
-		} catch (FileNotFoundException e) {
-
-			System.out.println("Error");
-
-			e.printStackTrace();
-
+			FileReader archivo = new FileReader(nombreArchivo);
+			
+			BufferedReader lectura = new BufferedReader(archivo);
+			
+			String linea;
+			
+			while((linea = lectura.readLine()) != null && !linea.isEmpty()) {
+			
+				System.out.println(linea);
+		
+			}lectura.close();	
+		
+		}catch (Exception e) {
+		
+			System.out.println(e.getMessage());
 		}
-
 	}
-
 }
+

@@ -1,29 +1,22 @@
 package n1exercici1;
 
 import java.io.File;
+import java.util.Arrays;
 
 public class App {
 
-	public static void main(String[] arg) {
+	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		lista("C:\\Users\\formacio\\Desktop");
+
+		File archivos = new File(args[0]);
+		String[] lista = archivos.list();
+		if (lista != null) {
+			Arrays.sort(lista);
+			for(int i = 0; i < lista.length; i++){
+				System.out.println(lista[i]);
+			}	
+		} else
+			System.out.println("La ruta no existe");
 	}
-
-	public static void lista(String ubicacion) {
-
-		File directorio = new File(ubicacion);
-
-		if (directorio.exists()) {
-			String[] archivosDirectorio = directorio.list();
-			for (String file : archivosDirectorio) {
-
-				System.out.println(file);
-			}
-		} else {
-			System.out.println("El directorio no existe");
-		}
-
-	}
-
 }

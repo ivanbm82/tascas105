@@ -4,19 +4,17 @@ import java.io.*;
 
 public class App {
 
-	public static void main(String[] arg) {
+	public static void main(String[] args) {
 
-		Vehiculo[] coche = new Vehiculo[2];
-		coche[0] = new Vehiculo("Seat", "Ibiza");
-		coche[1] = new Vehiculo("Peugeot", "206");
-
+		Vehiculo coche = new Vehiculo("Seat", "Ibiza");
+		
 		serializeAnObject(coche);
 
 		deserializeAnObject();
 
 	}
 
-	public static void serializeAnObject(Vehiculo[] coche) {
+	public static void serializeAnObject(Vehiculo coche) {
 
 		try {
 
@@ -33,13 +31,10 @@ public class App {
 		try {
 
 			ObjectInputStream object = new ObjectInputStream(new FileInputStream("fichero.ser"));
-			Vehiculo[] vehiculoDes = (Vehiculo[]) object.readObject();
+			System.out.println(object.readObject());
 			object.close();
 
-			for (Vehiculo coche : vehiculoDes) {
-
-				System.out.println(coche);
-			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

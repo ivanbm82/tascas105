@@ -2,38 +2,37 @@ package n1exercici2;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 public class App {
 
-	public static void main(String[] arg) {
+	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		listaArbol(new File("C:\\Users\\formacio\\Desktop\\tascas105-main")); 
+		listarArbol(new File(args[0]));
 	}
 
-	public static void listaArbol(File directorio) {
-		
-
-		File listaDirectorio[] = directorio.listFiles();
+	public static void listarArbol(File archivos) {
+		File[] listaDirectorio = archivos.listFiles();
 
 		if (listaDirectorio != null) {
+			Arrays.sort(listaDirectorio);
 
-			for (int i = 0; i < listaDirectorio.length; i++) {
+			for (File file : listaDirectorio)
 
-				if (listaDirectorio[i].isDirectory()) {
+				if (file.isFile()) {
 
-					System.out.println(
-							listaDirectorio[i].getName() + " - D - " + formato(listaDirectorio[i].lastModified()));
-					listaArbol(listaDirectorio[i]);
+					System.out.println(file.getName() + " - F - " + formato(file.lastModified()));
 
-				} else {
-					System.out.println(
-							listaDirectorio[i].getName() + " - F - " + formato(listaDirectorio[i].lastModified()));
+				} else if (file.isDirectory()) {
+					System.out.println(file.getName() + " - D - " + formato(file.lastModified()));
+					listarArbol(file);
 				}
-			}
-		} else
-			System.out.println("El directorio no existe");
+
+		} else {
+			System.out.println("La ruta no es correcta");
+		}
 
 	}
 
@@ -41,5 +40,4 @@ public class App {
 
 		return new SimpleDateFormat("dd-MM-yyyy").format(new Date(date));
 	}
-
 }
