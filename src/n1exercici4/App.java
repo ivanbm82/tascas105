@@ -53,7 +53,7 @@ public class App {
 	public static void createFile(String archiescrito) {
 
 		try {
-			File creacionArchivo = new File("/Users/navi/Desktop/listaDirectorios.txt");
+			File creacionArchivo = new File("listaDirectorios.txt");
 			FileWriter fw = new FileWriter(creacionArchivo);
 			fw.write(archiescrito + "\n");
 			fw.close();
